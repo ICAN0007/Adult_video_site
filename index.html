@@ -1,1 +1,43 @@
-<!DOCTYPE html><html><head><title>Video Site</title></head><body><h1>Welcome to Video Site</h1></body></html>
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Video Site</title>
+    <link rel="stylesheet" href="assets/css/style.css">
+    <style>
+        body { background: #111; color: #fff; font-family: Arial, sans-serif; margin: 0; padding: 0; }
+        .header { padding: 1rem; text-align: center; background: #222; font-size: 1.5rem; }
+        .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem; padding: 1rem; }
+        .video-card { background: #1a1a1a; border-radius: 10px; overflow: hidden; text-align: center; position: relative; }
+        .video-card img { width: 100%; height: auto; display: block; }
+        .video-card .title { padding: 0.5rem; font-size: 1rem; }
+        .views { position: absolute; bottom: 8px; right: 8px; background: rgba(0,0,0,0.6); padding: 2px 6px; border-radius: 5px; font-size: 0.85rem; }
+    </style>
+</head>
+<body>
+    <div class="header">My Video Site</div>
+    <div class="grid" id="videoGrid"></div>
+
+    <script>
+        fetch('videos.json')
+            .then(res => res.json())
+            .then(videos => {
+                const container = document.getElementById('videoGrid');
+                videos.forEach(video => {
+                    const card = document.createElement('div');
+                    card.className = 'video-card';
+                    card.innerHTML = `
+                        <a href="video.html?title=${encodeURIComponent(video.title)}">
+                            <img loading="lazy" src="${video.thumbnail}" alt="${video.title}">
+                            <div class="views">${video.views} views</div>
+                            <div class="title">${video.title}</div>
+                        </a>
+                    `;
+                    container.appendChild(card);
+                });
+            });
+    </script>
+</body>
+</html>
